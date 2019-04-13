@@ -1,4 +1,3 @@
-//Program for First Fit Algorithm
 #include<stdio.h> 
 int firstFit(int blockSize[], int m, 
 			int processSize[], int n) 
@@ -64,6 +63,42 @@ int bestFit(int blockSize[], int m, int processSize[], int n)
             printf("Not Allocated\n");  
     } 
 } 
+
+int worstFit(int blockSize[], int m, int processSize[],  
+                                                 int n) 
+{ 
+    int allocation[n],i,j; 
+    for (i=0; i<n; i++) 
+    { 
+        int wstIdx = -1; 
+        for (j=0; j<m; j++) 
+        { 
+            if (blockSize[j] >= processSize[i]) 
+            { 
+                if (wstIdx == -1) 
+                    wstIdx = j; 
+                else if (blockSize[wstIdx] < blockSize[j]) 
+                    wstIdx = j; 
+            } 
+        } 
+        if (wstIdx != -1) 
+        { 
+            allocation[i] = wstIdx;  
+            blockSize[wstIdx] -= processSize[i]; 
+        } 
+    } 
+  
+    printf("\nProcess No.\tProcess Size\tBlock no.\n"); 
+    for (i = 0; i < n; i++) 
+    { 
+        printf("   %d\t\t%d\t\t",i+1,processSize[i]); 
+        if (allocation[i] != -1) 
+            printf("%d\n",allocation[i] + 1); 
+        else
+            printf("Not Allocated\n");  
+    } 
+} 
+
 int main() 
 { 
  	int n,m;
@@ -92,6 +127,7 @@ int main()
 			bestFit(blockSize, m, processSize, n);
 			break;
 		case 3:
+			worstFit(blockSize, m, processSize, n);
 			break;
 		default:
 			printf("Wrong Choice");
